@@ -1,13 +1,14 @@
 package ru.kazax.chat.ui.login
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ru.kazax.chat.R
 import ru.kazax.chat.data.LoginRepository
 import ru.kazax.chat.data.Result
-
-import ru.kazax.chat.R
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -19,13 +20,14 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun login(username: String, email: String, password: String) {
         // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, email, password)
-
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+        viewModelScope.launch {
+            val result = loginRepository.login(username, email, password)
+            if (result is Result.Success) {
+                _loginResult.value =
+                    LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
+            } else {
+                _loginResult.value = LoginResult(error = R.string.login_failed)
+            }
         }
     }
 

@@ -1,5 +1,7 @@
 package ru.kazax.chat.data
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.kazax.chat.data.model.LoggedInUser
 
 /**
@@ -7,7 +9,7 @@ import ru.kazax.chat.data.model.LoggedInUser
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class LoginRepository(val dataSource: LoginDataSource) {
+class LoginRepository(val dataSource: FirebaseAuthSource) {
 
     // in-memory cache of the loggedInUser object
     var user: LoggedInUser? = null
@@ -27,15 +29,15 @@ class LoginRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(username: String, email: String, password: String): Result<LoggedInUser> {
+    suspend fun login(username: String, email: String, password: String): Result<LoggedInUser> {
         // handle login
-        val result = dataSource.login(username, email, password)
-
-        if (result is Result.Success) {
-            setLoggedInUser(result.data)
+        return withContext(Dispatchers.IO) {
+            val result = dataSource.login(username, email, password)
+            if (result is Result.Success) {
+                setLoggedInUser(result.data)
+            }
+            result
         }
-
-        return result
     }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {

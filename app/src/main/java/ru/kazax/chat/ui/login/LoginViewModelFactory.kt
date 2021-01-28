@@ -2,7 +2,7 @@ package ru.kazax.chat.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.kazax.chat.data.LoginDataSource
+import ru.kazax.chat.data.FirebaseAuthSource
 import ru.kazax.chat.data.LoginRepository
 
 /**
@@ -15,9 +15,9 @@ class LoginViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             return LoginViewModel(
-                    loginRepository = LoginRepository(
-                            dataSource = LoginDataSource()
-                    )
+                loginRepository = LoginRepository(
+                    dataSource = FirebaseAuthSource()
+                )
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
