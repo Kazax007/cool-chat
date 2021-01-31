@@ -29,10 +29,10 @@ class LoginRepository(val dataSource: FirebaseAuthSource) {
         dataSource.logout()
     }
 
-    suspend fun login(username: String, email: String, password: String): Result<LoggedInUser> {
+    suspend fun login(email: String, password: String): Result<LoggedInUser> {
         // handle login
         return withContext(Dispatchers.IO) {
-            val result = dataSource.login(username, email, password)
+            val result = dataSource.login(email, password)
             if (result is Result.Success) {
                 setLoggedInUser(result.data)
             }

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -15,7 +14,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.FirebaseAuth
 import ru.kazax.chat.R
 
 class LoginActivity : AppCompatActivity() {
@@ -27,10 +25,9 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_login)
 
-        val username = findViewById<EditText>(R.id.personName)
         val email = findViewById<EditText>(R.id.email)
         val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
+        val login = findViewById<Button>(R.id.login_button)
         val loading = findViewById<ProgressBar>(R.id.loading)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
@@ -42,9 +39,6 @@ class LoginActivity : AppCompatActivity() {
             // disable login button unless both username / password is valid
             login.isEnabled = loginState.isDataValid
 
-            if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
-            }
             if (loginState.emailError != null) {
                 email.error = getString(loginState.emailError)
             }
@@ -71,7 +65,6 @@ class LoginActivity : AppCompatActivity() {
 
         email.afterTextChanged {
             loginViewModel.loginDataChanged(
-                username.text.toString(),
                 email.text.toString(),
                 password.text.toString()
             )
@@ -80,7 +73,6 @@ class LoginActivity : AppCompatActivity() {
         password.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
-                    username.text.toString(),
                     email.text.toString(),
                     password.text.toString()
                 )
@@ -90,7 +82,6 @@ class LoginActivity : AppCompatActivity() {
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         loginViewModel.login(
-                            username.text.toString(),
                             email.text.toString(),
                             password.text.toString()
                         )
@@ -101,7 +92,6 @@ class LoginActivity : AppCompatActivity() {
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(
-                    username.text.toString(),
                     email.text.toString(),
                     password.text.toString()
                 )

@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background_color">#B7FF9500</color>
+    <color name="btn_color">#8B4C60D3</color>
+    <color name="ic_chat_launcher_background">#CBDC52</color>
 </resources>

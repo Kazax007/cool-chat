@@ -13,7 +13,7 @@ class FirebaseAuthSource {
         FirebaseAuth.getInstance()
     }
 
-    fun login(username: String, email: String, password: String): Result<LoggedInUser> {
+    fun login(email: String, password: String): Result<LoggedInUser> {
         try {
             Log.i("cool-chat", "signin emai: $email, pass: $password")
             firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -22,7 +22,7 @@ class FirebaseAuthSource {
                 return Result.Success(
                     LoggedInUser(
                         user.uid,
-                        username
+                        "CHANGE ME"
                     )
                 )
             }
