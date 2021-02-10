@@ -15,14 +15,14 @@ class FirebaseAuthSource {
 
     fun login(email: String, password: String): Result<LoggedInUser> {
         try {
-            Log.i("cool-chat", "signin emai: $email, pass: $password")
+            Log.i("cool-chat", "signin email: $email, pass: $password")
             firebaseAuth.signInWithEmailAndPassword(email, password)
             val user = firebaseAuth.currentUser
             user?.let {
                 return Result.Success(
                     LoggedInUser(
                         user.uid,
-                        "CHANGE ME"
+                        email
                     )
                 )
             }
