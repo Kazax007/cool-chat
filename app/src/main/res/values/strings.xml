@@ -11,6 +11,7 @@
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_username">This username is already exist</string>
     <string name="invalid_password">Password must be >5 characters</string>
+    <string name="passwords_mismatch">Password mismatch</string>
     <string name="login_failed">"Login failed"</string>
     <string name="logo">logo</string>
     <!-- TODO: Remove or change this placeholder text -->

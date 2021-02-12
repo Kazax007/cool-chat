@@ -32,6 +32,25 @@ class FirebaseAuthSource {
         }
     }
 
+    fun signup(email: String, password: String): Result<LoggedInUser> {
+        try {
+            Log.i("cool-chat", "signup email: $email, pass: $password")
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+            val user = firebaseAuth.currentUser
+            user?.let {
+                return Result.Success(
+                    LoggedInUser(
+                        user.uid,
+                        email
+                    )
+                )
+            }
+            return Result.Error(Exception("Firebase returned empty user"))
+        } catch (e: Exception) {
+            return Result.Error(Exception("Network request failed"))
+        }
+    }
+
     fun logout() {
         // TODO: revoke authentication
     }
